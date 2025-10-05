@@ -1,9 +1,11 @@
-const Page = () => {
+import CompanionsList from "@/components/CompanionsList"
+
+const CompanionsLibrary = () => {
   return (
     <div>
-      companions
+      companions library
     </div>
   )
 }
 
-export default Page
+export default CompanionsLibrary

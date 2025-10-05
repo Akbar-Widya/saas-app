@@ -1,7 +1,7 @@
 const CompanionSession = () => {
   return (
     <div>
-      
+      companion session
     </div>
   )
 }
