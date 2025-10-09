@@ -19,7 +19,7 @@ const CompanionCard = ({
    color,
 }: CompanionCardProps) => {
    return (
-      <article className="companion-card min-w-[350px]" style={{ backgroundColor: color }}>
+      <article className="companion-card" style={{ backgroundColor: color }}>
          <div className="flex justify-between items-center">
             <div className="subject-badge">{subject}</div>
 
@@ -38,7 +38,7 @@ const CompanionCard = ({
             <p>{duration} minutes</p>
          </div>
 
-         <Link href={`/companions/${id}`} className="w-full">
+         <Link href={`/companions/${id}`} className="w-full mt-auto">
             <button className="btn-primary w-full justify-center">
                Launch Lesson
             </button>

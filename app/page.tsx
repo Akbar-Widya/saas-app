@@ -1,34 +1,39 @@
-import { Button } from "@/components/ui/button";
 import React from "react";
 import CompanionCard from "@/components/CompanionCard";
 import CompanionsList from "@/components/CompanionsList";
 import Cta from "@/components/Cta";
 import { recentSessions } from "@/constants";
+import {
+   getAllCompanions,
+   getRecentUniqueSessions,
+} from "@/lib/actions/companion.actions";
+import { getSubjectColor } from "@/lib/utils";
 
-const Page = () => {
+const Page = async () => {
+   const companions = await getAllCompanions({ limit: 6 });
+   const recentSessionsCompanions = await getRecentUniqueSessions(10);
    return (
       <main>
          <section className="home-section">
             <CompanionsList
                title="Recently completed sessions"
-               companions={recentSessions}
+               companions={recentSessionsCompanions}
                classNames="w-2/3 max-lg:w-full"
             />
-         <Cta />
+            <Cta />
          </section>
 
          <h1 className="text-2xl underline">Popular Companions</h1>
 
-         <section className="home-section items-stretch flex-wrap">
+         <section className="companions-grid">
+            {companions.map((companion) => (
                <CompanionCard
-                  id="123"
-                  name="Neura the Brainy Explorer"
-                  topic="Neural Network of the Brain"
-                  subject="Science"
-                  duration={45}
-                  color="#ffda6e"
+                  key={companion.id}
+                  { ...companion}
+                  color={getSubjectColor(companion.subject)}
                />
-               <CompanionCard
+            ))}
+            {/* <CompanionCard
                   id="456"
                   name="Countsy the Number Wizard"
                   topic="Derivatives & Integrals"
@@ -60,7 +65,7 @@ const Page = () => {
                   subject="Coding"
                   duration={30}
                   color="#FFC8E4"
-               />
+               /> */}
          </section>
       </main>
    );
