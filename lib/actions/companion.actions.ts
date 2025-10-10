@@ -2,29 +2,6 @@
 
 import { auth } from '@clerk/nextjs/server'
 import { createSupabaseClient } from '../supabase'
-import { createSupabaseServerClient } from '../supabase.server'
-
-// Fungsi utama untuk mengambil data companions terbaru milik pengguna saat ini.
-// not used, still figuring the jwt auth superbase
-export async function fetchLatestCompanionsForCurrentUser(limit: number = 10) {
-  const supabase = await createSupabaseServerClient()
-
-  if (!supabase) {
-    return []
-  }
-
-  const { data, error } = await supabase.rpc('get_latest_companions_for_current_user', {
-    limit_count: limit,
-  })
-
-  if (error) {
-    console.error('Error fetching latest companions:', error)
-    return []
-  }
-
-  return data
-}
-
 
 export const createCompanion = async (formData: CreateCompanion) => {
    const { userId: author } = await auth();
@@ -90,21 +67,7 @@ export const addToSessionHistory = async (companionId: string) => {
    return data
 }
 
-// not used, duplicacy, key issue, found better function
-export const getRecentSessions = async (limit = 10) => {
-   const supabase = createSupabaseClient()
-   const { data, error } = await supabase
-      .from('session_history')
-      .select(`companions:companion_id (*)`)
-      .order('created_at', { ascending: false })
-      .limit(limit)
-
-   if(error) throw new Error(error.message)
-
-   return data.map(({ companions }) => companions)
-}
-
-//i love using it, it has no duplicacy, and no jwt auth superbase required
+//i love using it, for global session table it has no duplicacy, and no jwt auth superbase required
 export const getRecentUniqueSessions = async (limit = 10) => {
    const supabase = createSupabaseClient()
    const { data, error } = await supabase
@@ -112,24 +75,10 @@ export const getRecentUniqueSessions = async (limit = 10) => {
 
    if(error) throw new Error(error.message)
    return data
-
-   // return data.map(({ companions }) => companions)
 }
 
-// not-used, no duplicacy
-export const getUserRecentUniqueSessions = async (limit = 10) => {
-   const supabase = createSupabaseClient()
-   const { data, error } = await supabase
-      .rpc('get_latest_companions_full', {limit_count: limit})
-
-   if(error) throw new Error(error.message)
-   return data
-
-   // return data.map(({ companions }) => companions)
-}
-
-// not-used, for global session table, originally from tutorial, has duplicacy, has limit
-export const getUserSession = async (userId: string, limit = 10) => {
+// being use, for user sessions table, originally from tutorial, on second thought limiting history storage still makes sense
+export const getUserSessions = async (userId: string, limit = 10) => {
    const supabase = createSupabaseClient()
    const { data, error } = await supabase
       .from('session_history')
@@ -142,23 +91,9 @@ export const getUserSession = async (userId: string, limit = 10) => {
 
    return data.map(({ companions }) => companions)
 }
-//used, for user session table, originally from tutorial, has duplicacy, all user sessions, key issue solved
-export const getAllUserSessions = async (userId: string) => {
-   const supabase = createSupabaseClient()
-   const { data, error } = await supabase
-      .from('session_history')
-      .select(`id, companions:companion_id (*)`)
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
 
-   if(error) throw new Error(error.message)
-
-   return data
-   // return data.map(({ companions }) => companions)
-}
-
-//used, for companion card, originally from tutorial, has duplicacy
-export const getAllUserCompanions = async (userId: string) => {
+//being use, for companion card, originally from tutorial, unique companion id
+export const getUserCompanions = async (userId: string) => {
    const supabase = createSupabaseClient()
    const { data, error } = await supabase
       .from('companions')
