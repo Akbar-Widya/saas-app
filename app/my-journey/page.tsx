@@ -12,10 +12,9 @@ import {
    AccordionItem,
    AccordionTrigger,
 } from "@radix-ui/react-accordion";
+import { ChevronDownIcon } from "lucide-react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-
-// tapikan aku nge-map data dari companions (walaupun diambil dari yang diakses terbaru pada riwayat yg tersimpan di tabel session_history)
 
 const Profile = async () => {
    const user = await currentUser();
@@ -78,8 +77,9 @@ const Profile = async () => {
 
          <Accordion type="multiple">
             <AccordionItem value="recent">
-               <AccordionTrigger className="text-2xl font-bold p-3">
-                  Recent Sessions
+               <AccordionTrigger className="text-2xl font-bold p-3 hover:underline w-full flex items-center justify-between">
+                  <span>Recent Sessions</span>
+					   <ChevronDownIcon className="AccordionChevron" aria-hidden />
                </AccordionTrigger>
                <AccordionContent>
                   <CompanionsList
@@ -91,7 +91,10 @@ const Profile = async () => {
             </AccordionItem>
 
             <AccordionItem value="companions">
-               <AccordionTrigger className="text-2xl font-bold p-3">My Companions {`(${companions.length})`}</AccordionTrigger>
+               <AccordionTrigger className="text-2xl font-bold p-3 hover:underline w-full flex items-center justify-between">
+                  <span>My Companions {`(${companions.length})`}</span>
+					   <ChevronDownIcon className="AccordionChevron" aria-hidden />
+               </AccordionTrigger>
                <AccordionContent>
                   <CompanionsList
                      title="My Companions"

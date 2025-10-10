@@ -18,7 +18,6 @@ const CompanionSession = async ({ params }: CompanionSessionPageProps) => {
    const { id } = await params;
    const companion = await getCompanion(id);
    const user = await currentUser();
-   console.log(companion);
 
    const { name, subject, title, topic, duration } = companion;
 

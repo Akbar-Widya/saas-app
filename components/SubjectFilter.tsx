@@ -1,7 +1,7 @@
 "use client";
 
 import { formUrlQuery, removeKeysFromUrlQuery } from "@jsmastery/utils";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
    Select,
@@ -13,8 +13,7 @@ import {
 import { subjects } from "@/constants";
 
 const SubjectFilter = () => {
-   // as soon as you use something that start with 'use', make it a client side rendering
-   const pathname = usePathname();
+   // as soon as you use something that start with 'use', make the sourcecode as a client side rendering
    const router = useRouter();
    const searchParams = useSearchParams();
    const query = searchParams.get("subject") || "";
