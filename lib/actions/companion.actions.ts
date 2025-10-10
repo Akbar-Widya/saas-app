@@ -2,6 +2,7 @@
 
 import { auth } from '@clerk/nextjs/server'
 import { createSupabaseClient } from '../supabase'
+import { createSupabaseServerClient } from '../supabase.server';
 
 export const createCompanion = async (formData: CreateCompanion) => {
    const { userId: author } = await auth();
@@ -69,7 +70,7 @@ export const addToSessionHistory = async (companionId: string) => {
 
 //i love using it, for global session table it has no duplicacy, and no jwt auth superbase required
 export const getRecentUniqueSessions = async (limit = 10) => {
-   const supabase = createSupabaseClient()
+   const supabase = createSupabaseServerClient()
    const { data, error } = await supabase
       .rpc('get_latest_companions_full', {limit_count: limit})
 
