@@ -77,19 +77,18 @@ export const getRecentUniqueSessions = async (limit = 10) => {
    return data
 }
 
-// being use, for user sessions table, originally from tutorial, on second thought limiting history storage still makes sense
-export const getUserSessions = async (userId: string, limit = 10) => {
+//used, for user session table, originally from tutorial, has duplicacy, all user sessions, key issue solved
+export const getUserSessions = async (userId: string) => {
    const supabase = createSupabaseClient()
    const { data, error } = await supabase
       .from('session_history')
-      .select(`companions:companion_id (*)`)
+      .select(`id, companions:companion_id (*)`)
       .eq('user_id', userId)
       .order('created_at', { ascending: false })
-      .limit(limit)
 
    if(error) throw new Error(error.message)
 
-   return data.map(({ companions }) => companions)
+   return data
 }
 
 //being use, for companion card, originally from tutorial, unique companion id

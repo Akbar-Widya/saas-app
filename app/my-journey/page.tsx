@@ -84,7 +84,7 @@ const Profile = async () => {
                <AccordionContent>
                   <CompanionsList
                      title="Recent Sessions"
-                     companions={sessionHistory}
+                     sessions={sessionHistory}
                      classNames="w-2/3 max-lg:w-full"
                   />
                </AccordionContent>
